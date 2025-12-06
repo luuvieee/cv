@@ -69,30 +69,53 @@
                 padding: 0 !important;
             }
 
-            .lg\:grid-cols-12 {
-                display: grid !important;
-                grid-template-columns: repeat(12, minmax(0, 1fr)) !important;
+            /* DEFAULT PC LAYOUT (Flexbox for Reliability) */
+            body:not(.print-mobile) .lg\:grid-cols-12 {
+                display: flex !important;
+                flex-direction: row !important;
+                justify-content: space-between !important;
                 gap: 2rem !important;
             }
 
-            .lg\:col-span-7 {
-                grid-column: span 7 / span 7 !important;
+            body:not(.print-mobile) .lg\:col-span-7 {
+                width: 58% !important;
+                flex: 0 0 58% !important;
             }
 
-            .lg\:col-span-5 {
-                grid-column: span 5 / span 5 !important;
+            body:not(.print-mobile) .lg\:col-span-5 {
+                width: 38% !important;
+                /* Remaining space minus gap */
+                flex: 0 0 38% !important;
             }
 
-            .lg\:grid-cols-4 {
-                display: grid !important;
-                grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+            /* MOBILE LAYOUT (Stack everything) */
+            body.print-mobile .lg\:grid-cols-12,
+            body.print-mobile .grid-cols-12 {
+                display: block !important;
             }
 
-            .md\:grid-cols-3 {
-                display: grid !important;
-                grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+            body.print-mobile .lg\:col-span-7,
+            body.print-mobile .lg\:col-span-5,
+            body.print-mobile .grid-cols-1,
+            body.print-mobile .md\:grid-cols-2,
+            body.print-mobile .lg\:grid-cols-4,
+            body.print-mobile .md\:grid-cols-3 {
+                display: block !important;
+                width: 100% !important;
+                margin-bottom: 1.5rem !important;
+                grid-template-columns: none !important;
             }
 
+            body.print-mobile .flex-row {
+                flex-direction: column !important;
+            }
+
+            /* General Grid Reset for Mobile */
+            body.print-mobile .grid {
+                display: block !important;
+            }
+
+            /* Common Overrides */
             .break-inside-avoid,
             .bg-white,
             .rounded-2xl {
@@ -115,7 +138,18 @@
 
             .bg-gradient-to-br {
                 -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
             }
+        }
+
+        /* Menu Animation Classes */
+        .export-menu-enter {
+            display: flex !important;
+        }
+
+        .export-menu-enter-active {
+            opacity: 1 !important;
+            transform: scale(1) !important;
         }
     </style>
 </head>
@@ -566,16 +600,48 @@
         </div>
     </main>
 
-    <button onclick="window.print()"
-        class="no-print fixed bottom-8 right-8 bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-full shadow-2xl transition transform hover:scale-110 z-50 group">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-        </svg>
-        <span
-            class="absolute right-full mr-3 top-2 bg-slate-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition whitespace-nowrap">Save
-            PDF</span>
-    </button>
+    <!-- EXPORT FLOATING ACTION BUTTON -->
+    <div class="no-print fixed bottom-8 right-8 z-50 flex flex-col items-end gap-2 group-export">
+
+        <!-- Options Menu -->
+        <div id="exportOptions"
+            class="bg-white rounded-2xl shadow-2xl border border-slate-100 p-2 hidden flex-col gap-1 min-w-[200px] transform transition-all duration-200 origin-bottom-right scale-95 opacity-0 mb-2">
+            <div class="px-4 py-2 border-b border-slate-100 mb-1">
+                <div class="text-xs font-bold text-slate-400 uppercase tracking-wider">Xuất dưới dạng PDF</div>
+            </div>
+
+            <button onclick="printMode('pc')"
+                class="text-left px-4 py-3 hover:bg-slate-50 rounded-xl transition flex items-center gap-3 text-slate-700 w-full group">
+                <span
+                    class="bg-slate-100 text-slate-600 p-2 rounded-lg text-lg group-hover:bg-blue-100 group-hover:text-blue-600 transition">🖥️</span>
+                <div>
+                    <div class="font-bold text-sm">Giao diện PC</div>
+                    <div class="text-[10px] text-slate-400">Hai cột (Chuẩn)</div>
+                </div>
+            </button>
+
+            <button onclick="printMode('mobile')"
+                class="text-left px-4 py-3 hover:bg-slate-50 rounded-xl transition flex items-center gap-3 text-slate-700 w-full group">
+                <span
+                    class="bg-slate-100 text-slate-600 p-2 rounded-lg text-lg group-hover:bg-green-100 group-hover:text-green-600 transition">📱</span>
+                <div>
+                    <div class="font-bold text-sm">Giao diện Mobile</div>
+                    <div class="text-[10px] text-slate-400">Một cột (Dễ đọc)</div>
+                </div>
+            </button>
+        </div>
+
+        <!-- Main Button -->
+        <button onclick="toggleExportMenu()"
+            class="bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-full shadow-2xl transition transform hover:scale-105 active:scale-95 flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+            </svg>
+            <span class="font-bold pr-2">Xuất PDF</span>
+        </button>
+    </div>
 
     <script>
         // --- CONFIGURATION ---
@@ -633,6 +699,55 @@
                     }
                 },
                 plugins: { legend: { display: false } }
+            }
+        });
+
+
+        // 4. EXPORT LOGIC
+        function toggleExportMenu() {
+            const menu = document.getElementById('exportOptions');
+            const isHidden = menu.classList.contains('hidden');
+
+            if (isHidden) {
+                menu.classList.remove('hidden');
+                // Trigger reflow
+                void menu.offsetWidth;
+                menu.classList.add('export-menu-enter-active');
+                menu.classList.remove('opacity-0', 'scale-95');
+            } else {
+                menu.classList.add('opacity-0', 'scale-95');
+                menu.classList.remove('export-menu-enter-active');
+                setTimeout(() => {
+                    menu.classList.add('hidden');
+                }, 200);
+            }
+        }
+
+        function printMode(mode) {
+            // Reset
+            document.body.classList.remove('print-mobile', 'print-pc');
+
+            // Apply
+            if (mode === 'mobile') {
+                document.body.classList.add('print-mobile');
+            }
+
+            // Close menu
+            toggleExportMenu();
+
+            // Print after small delay to let CSS update
+            setTimeout(() => {
+                window.print();
+            }, 100);
+        }
+
+        // Close menu when clicking outside
+        document.addEventListener('click', function (event) {
+            const menu = document.getElementById('exportOptions');
+            const button = document.querySelector('.group-export');
+
+            if (!menu.classList.contains('hidden') && !button.contains(event.target)) {
+                toggleExportMenu();
             }
         });
     </script>
