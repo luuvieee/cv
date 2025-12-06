@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Việt Lưu Xuân - Strategic Product Owner & Tech Art</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            /* slate-50 */
+            color: #1e293b;
+            /* slate-800 */
+        }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin: auto;
+            height: 320px;
+        }
+
+        .card-hover {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        /* --- PRINT OPTIMIZATION --- */
+        @media print {
+            @page {
+                margin: 0.5cm;
+                size: A4 portrait;
+            }
+
+            body {
+                background: white;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+                zoom: 0.70;
+                width: 100% !important;
+            }
+
+            .no-print {
+                display: none !important;
+            }
+
+            .shadow-xl,
+            .shadow-lg,
+            .shadow-md,
+            .shadow-sm,
+            .shadow-2xl {
+                box-shadow: none !important;
+                border: 1px solid #e2e8f0;
+            }
+
+            .max-w-6xl {
+                max-width: 100% !important;
+                margin: 0 auto !important;
+                padding: 0 !important;
+            }
+
+            .lg\:grid-cols-12 {
+                display: grid !important;
+                grid-template-columns: repeat(12, minmax(0, 1fr)) !important;
+                gap: 2rem !important;
+            }
+
+            .lg\:col-span-7 {
+                grid-column: span 7 / span 7 !important;
+            }
+
+            .lg\:col-span-5 {
+                grid-column: span 5 / span 5 !important;
+            }
+
+            .lg\:grid-cols-4 {
+                display: grid !important;
+                grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+            }
+
+            .md\:grid-cols-3 {
+                display: grid !important;
+                grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+            }
+
+            .break-inside-avoid,
+            .bg-white,
+            .rounded-2xl {
+                break-inside: avoid !important;
+                page-break-inside: avoid !important;
+            }
+
+            header.text-white {
+                color: white !important;
+            }
+
+            .text-white {
+                color: black;
+            }
+
+            .bg-slate-800.text-white {
+                color: white !important;
+                background-color: #1e293b !important;
+            }
+
+            .bg-gradient-to-br {
+                -webkit-print-color-adjust: exact !important;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-slate-50">
+
+    <!-- LANGUAGE SWITCHER -->
+    <a href="en.html"
+        class="no-print fixed top-4 right-4 z-50 bg-white/90 backdrop-blur shadow-lg border border-slate-200 rounded-full px-4 py-2 text-sm font-bold text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition flex items-center gap-2">
+        <span>EN</span>
+        <span class="text-slate-300">|</span>
+        <span class="text-blue-600">VN</span>
+    </a>
+
+    <!-- HERO SECTION -->
+    <header
+        class="bg-gradient-to-br from-blue-900 via-blue-800 to-indigo-900 text-white pt-12 pb-20 px-6 rounded-b-[3rem] shadow-2xl relative overflow-hidden break-inside-avoid">
+        <div
+            class="absolute top-0 right-0 w-96 h-96 bg-blue-500 rounded-full mix-blend-overlay filter blur-3xl opacity-20 -mr-20 -mt-20">
+        </div>
+        <div
+            class="absolute bottom-0 left-0 w-72 h-72 bg-orange-500 rounded-full mix-blend-overlay filter blur-3xl opacity-20 -ml-20 -mb-20">
+        </div>
+
+        <div
+            class="max-w-6xl mx-auto relative z-10 flex flex-col lg:flex-row items-center lg:items-start justify-between gap-8">
+
+            <!-- Left Side: Name & Title -->
+            <div class="text-center lg:text-left flex-1">
+                <h1 class="text-5xl md:text-7xl font-black tracking-tight mb-2 leading-tight">
+                    VIỆT LƯU XUÂN
+                </h1>
+                <p class="text-xl md:text-2xl text-blue-100 font-light mb-6 leading-relaxed">
+                    Strategic Product Owner & Tech Art <br>
+                    <span class="text-orange-400 font-bold">Bridging Art, Tech & Business</span>
+                </p>
+
+                <div
+                    class="flex flex-wrap justify-center lg:justify-start gap-3 text-sm font-bold tracking-wide uppercase">
+                    <span class="px-4 py-2 bg-white/10 backdrop-blur-md rounded-full border border-white/20">Agile
+                        Management</span>
+                    <span class="px-4 py-2 bg-white/10 backdrop-blur-md rounded-full border border-white/20">Data-Driven
+                        PO</span>
+                    <span class="px-4 py-2 bg-white/10 backdrop-blur-md rounded-full border border-white/20">Tech Art
+                        Pipeline</span>
+                </div>
+            </div>
+
+            <!-- Right Side: Contact Info -->
+            <div
+                class="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 min-w-[280px] w-full lg:w-auto">
+                <h3 class="font-bold text-orange-400 uppercase tracking-widest text-xs mb-4 text-center lg:text-left">
+                    Contact With Me</h3>
+                <div class="space-y-3 text-sm">
+                    <div class="flex items-center gap-3 justify-center lg:justify-start">
+                        <span class="bg-white/20 p-1.5 rounded text-xs">✉️</span>
+                        <span class="font-semibold">lxv.product@gmail.com</span>
+                    </div>
+                    <div class="flex items-center gap-3 justify-center lg:justify-start">
+                        <span class="bg-white/20 p-1.5 rounded text-xs">📞</span>
+                        <span class="font-semibold">0976 63 16 15</span>
+                    </div>
+                    <div class="flex items-center gap-3 justify-center lg:justify-start">
+                        <span class="bg-white/20 p-1.5 rounded text-xs">🌐</span>
+                        <span class="font-semibold">linkedin.com/in/luuvieeee</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </header>
+
+    <!-- METRICS STRIP -->
+    <section class="-mt-12 max-w-6xl mx-auto px-6 mb-16 relative z-20 break-inside-avoid">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div class="bg-white p-6 rounded-2xl shadow-lg text-center card-hover border-t-4 border-orange-500">
+                <div class="text-3xl font-black text-slate-800 mb-2 mt-2">High ROI</div>
+                <div class="text-slate-500 text-xs font-bold uppercase tracking-wider">Tối ưu hiệu quả đầu tư</div>
+            </div>
+            <div class="bg-white p-6 rounded-2xl shadow-lg text-center card-hover border-t-4 border-blue-500">
+                <div class="text-5xl font-black text-slate-800 mb-1">10+</div>
+                <div class="text-slate-500 text-xs font-bold uppercase tracking-wider">Năm Kinh Nghiệm</div>
+            </div>
+            <div class="bg-white p-6 rounded-2xl shadow-lg text-center card-hover border-t-4 border-teal-500">
+                <div class="text-3xl font-black text-slate-800 mb-2 mt-2">Lean Prod.</div>
+                <div class="text-slate-500 text-xs font-bold uppercase tracking-wider">Sản xuất tinh gọn</div>
+            </div>
+            <div class="bg-white p-6 rounded-2xl shadow-lg text-center card-hover border-t-4 border-indigo-500">
+                <div class="text-3xl font-black text-slate-800 mb-2 mt-2">User Centric</div>
+                <div class="text-slate-500 text-xs font-bold uppercase tracking-wider">Tư duy người dùng</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTENT -->
+    <main class="max-w-6xl mx-auto px-6 pb-20 grid grid-cols-1 lg:grid-cols-12 gap-8">
+
+        <!-- INTRO & TECH STACK -->
+        <div class="lg:col-span-12 space-y-8 break-inside-avoid">
+            <div class="bg-white rounded-2xl shadow-sm p-8 border-l-8 border-blue-700">
+                <h2 class="text-2xl font-bold text-slate-800 mb-4">Executive Summary</h2>
+                <p class="text-slate-600 leading-relaxed text-lg">
+                    Mình là một Product Owner có xuất phát điểm từ Technical Artist. Thay vì chỉ đứng sau quản lý, mình
+                    thích việc "xắn tay áo" cùng team giải quyết bài toán cân bằng giữa cái đẹp của Art, sự hiệu quả của
+                    Tech và tính chính xác của Data. Mình tin rằng sản phẩm thành công phải bắt nguồn từ việc thấu hiểu
+                    User Insight và sự phối hợp nhịp nhàng giữa Product và Marketing. Kinh nghiệm của mình là cầu nối
+                    giúp các bộ phận "nói chung một ngôn ngữ", tạo ra sản phẩm chất lượng và tối ưu doanh thu.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="bg-slate-800 text-white p-6 rounded-xl shadow-md break-inside-avoid">
+                    <h3 class="text-orange-400 font-bold mb-3 uppercase text-sm tracking-wider">Core Tools & Tech</h3>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="bg-slate-700 px-3 py-1 rounded text-sm">Unity 3D</span>
+                        <span class="bg-slate-700 px-3 py-1 rounded text-sm">Shader Graph</span>
+                        <span class="bg-slate-700 px-3 py-1 rounded text-sm">Maya/Blender</span>
+                        <span class="bg-slate-700 px-3 py-1 rounded text-sm">Python (Tooling)</span>
+                        <span class="bg-slate-700 px-3 py-1 rounded text-sm">HLSL</span>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-md border border-slate-100 break-inside-avoid">
+                    <h3 class="text-blue-700 font-bold mb-3 uppercase text-sm tracking-wider">Management & Agile</h3>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="bg-blue-50 text-blue-700 px-3 py-1 rounded text-sm font-medium">Jira /
+                            Confluence</span>
+                        <span class="bg-blue-50 text-blue-700 px-3 py-1 rounded text-sm font-medium">Scrum Master</span>
+                        <span class="bg-blue-50 text-blue-700 px-3 py-1 rounded text-sm font-medium">Data
+                            Analysis</span>
+                        <span class="bg-blue-50 text-blue-700 px-3 py-1 rounded text-sm font-medium">Marketing
+                            Alignment</span>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-md border border-slate-100 break-inside-avoid">
+                    <h3 class="text-teal-700 font-bold mb-3 uppercase text-sm tracking-wider">Product Skills</h3>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="bg-teal-50 text-teal-700 px-3 py-1 rounded text-sm font-medium">User Insight</span>
+                        <span class="bg-teal-50 text-teal-700 px-3 py-1 rounded text-sm font-medium">A/B Testing</span>
+                        <span class="bg-teal-50 text-teal-700 px-3 py-1 rounded text-sm font-medium">User
+                            Retention</span>
+                        <span class="bg-teal-50 text-teal-700 px-3 py-1 rounded text-sm font-medium">Monetization</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- LEFT COLUMN: PORTFOLIO & TECH SOLUTIONS -->
+        <div class="lg:col-span-7 space-y-8">
+
+            <!-- PORTFOLIO SECTION -->
+            <div class="bg-white rounded-2xl shadow-sm p-8 break-inside-avoid">
+                <div class="mb-6 border-b border-slate-100 pb-4">
+                    <h3 class="text-xl font-bold text-slate-800 flex items-center gap-3">
+                        <span class="w-3 h-8 bg-blue-600 rounded-sm"></span>
+                        Representative Portfolio
+                    </h3>
+                    <p class="text-sm text-slate-500 mt-2">Dự án tiêu biểu (Role: Product Owner & Game Designer). Bấm
+                        vào để xem trên Store.</p>
+                </div>
+
+                <div class="space-y-4">
+                    <!-- Game 1: Bad Student -->
+                    <a href="https://play.google.com/store/apps/details?id=com.mirai.badstudent.school.prankteacher.prankster"
+                        target="_blank"
+                        class="flex items-center gap-4 p-4 rounded-xl border border-slate-100 hover:border-blue-300 hover:bg-blue-50 transition group cursor-pointer">
+                        <div
+                            class="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center shadow-sm text-white font-bold text-xl flex-shrink-0 group-hover:scale-105 transition">
+                            BS
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="font-bold text-slate-800 text-lg group-hover:text-blue-700">Bad Student: School
+                                Pranks</h4>
+                            <div class="flex flex-wrap gap-2 mt-1">
+                                <span class="text-xs font-bold text-white bg-orange-500 px-2 py-0.5 rounded">Top 2
+                                    Simulation US</span>
+                                <span class="text-xs text-slate-500 bg-slate-100 px-2 py-0.5 rounded">5M+
+                                    Downloads</span>
+                            </div>
+                        </div>
+                        <div class="text-slate-400 group-hover:text-blue-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                            </svg>
+                        </div>
+                    </a>
+
+                    <!-- Game 2: My Dream Hospital -->
+                    <a href="https://play.google.com/store/apps/details?id=com.miraistudio.myperfecthospital"
+                        target="_blank"
+                        class="flex items-center gap-4 p-4 rounded-xl border border-slate-100 hover:border-teal-300 hover:bg-teal-50 transition group cursor-pointer">
+                        <div
+                            class="w-16 h-16 rounded-2xl bg-gradient-to-br from-teal-400 to-teal-600 flex items-center justify-center shadow-sm text-white font-bold text-xl flex-shrink-0 group-hover:scale-105 transition">
+                            MDH
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="font-bold text-slate-800 text-lg group-hover:text-teal-700">My Dream Hospital
+                            </h4>
+                            <div class="flex flex-wrap gap-2 mt-1">
+                                <span class="text-xs font-bold text-white bg-teal-500 px-2 py-0.5 rounded">Top 10
+                                    Simulation VN</span>
+                                <span class="text-xs text-slate-500 bg-slate-100 px-2 py-0.5 rounded"> PO & GD</span>
+                            </div>
+                        </div>
+                        <div class="text-slate-400 group-hover:text-teal-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                            </svg>
+                        </div>
+                    </a>
+
+                    <!-- NEW PROJECT: Jujutsu Kaisen Typing Game -->
+                    <div
+                        class="flex items-center gap-4 p-4 rounded-xl border border-slate-100 hover:border-indigo-300 hover:bg-indigo-50 transition group cursor-pointer">
+                        <div
+                            class="w-16 h-16 rounded-2xl bg-gradient-to-br from-indigo-800 to-purple-800 flex items-center justify-center shadow-sm text-white font-bold text-xl flex-shrink-0 group-hover:scale-105 transition border-2 border-white ring-2 ring-indigo-200">
+                            JK
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="font-bold text-slate-800 text-lg group-hover:text-indigo-700">Jujutsu Kaisen
+                                Typing: Jutsuda</h4>
+                            <div class="flex flex-wrap gap-2 mt-1">
+                                <span class="text-xs font-bold text-white bg-indigo-600 px-2 py-0.5 rounded">Outsourcing
+                                    JP</span>
+                                <span
+                                    class="text-xs text-indigo-800 bg-indigo-100 px-2 py-0.5 rounded border border-indigo-200">PC
+                                    / Apps 2023</span>
+                                <span class="text-xs text-slate-500 bg-slate-100 px-2 py-0.5 rounded">High Quality
+                                    Standard</span>
+                            </div>
+                        </div>
+                        <div class="text-slate-400 group-hover:text-indigo-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+                            </svg>
+                        </div>
+                    </div>
+
+                    <!-- Other Games -->
+                    <div
+                        class="p-4 rounded-xl border border-dashed border-slate-300 bg-slate-50 text-center text-slate-500 text-sm">
+                        And <strong>5+ Other Games</strong> (Casual & Arcade) in roles of Game Designer & Level
+                        Designer.
+                    </div>
+                </div>
+            </div>
+
+            <!-- TECH ART SOLUTIONS -->
+            <div class="bg-white rounded-2xl shadow-sm p-8 break-inside-avoid">
+                <div class="mb-6 border-b border-slate-100 pb-4">
+                    <h3 class="text-xl font-bold text-slate-800 flex items-center gap-3">
+                        <span class="w-3 h-8 bg-orange-500 rounded-sm"></span>
+                        Technical Art Solutions
+                    </h3>
+                    <p class="text-sm text-slate-500 mt-2">Các giải pháp kỹ thuật trọng điểm đã triển khai giúp tối ưu
+                        hóa sản xuất.</p>
+                </div>
+
+                <div class="space-y-4">
+                    <div class="flex items-start gap-4">
+                        <div
+                            class="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center text-orange-600 flex-shrink-0 mt-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M13 10V3L4 14h7v7l9-11h-7z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-slate-800">Automated Asset Pipeline</h4>
+                            <p class="text-sm text-slate-600 leading-snug">Xây dựng công cụ tự động hóa việc
+                                Import/Export và kiểm tra chất lượng Asset. Giúp giảm <strong class="text-green-600">40%
+                                    thời gian lặp lại (iteration time)</strong> cho Artist, loại bỏ các lỗi sai sót thủ
+                                công.</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start gap-4">
+                        <div
+                            class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 flex-shrink-0 mt-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-slate-800">Low-End Device Optimization</h4>
+                            <p class="text-sm text-slate-600 leading-snug">Viết Custom Shaders (HLSL/Shader Graph) và hệ
+                                thống LOD thông minh. Đảm bảo game chạy ổn định <strong class="text-blue-600">60
+                                    FPS</strong> trên các thiết bị Android tầm trung, mở rộng tập người dùng tiếp cận.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start gap-4">
+                        <div
+                            class="w-10 h-10 rounded-full bg-teal-100 flex items-center justify-center text-teal-600 flex-shrink-0 mt-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-slate-800">Art-Code Bridge</h4>
+                            <p class="text-sm text-slate-600 leading-snug">Chuẩn hóa tài liệu kỹ thuật (Tech Docs) và
+                                quy trình làm việc (Workflow). Giảm thiểu xung đột giữa team Art và Dev, tăng tốc độ
+                                merge tính năng mới.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- RIGHT COLUMN: SKILLS & TIMELINE -->
+        <div class="lg:col-span-5 space-y-8">
+
+            <div class="bg-white rounded-2xl shadow-sm p-8 break-inside-avoid">
+                <div class="mb-6">
+                    <h3 class="text-xl font-bold text-slate-800">Competency Matrix</h3>
+                    <p class="text-sm text-slate-500">Sự cân bằng giữa Quản trị - Kỹ thuật - Dữ liệu.</p>
+                </div>
+                <div class="chart-container" style="height: 300px;">
+                    <canvas id="skillsChart"></canvas>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-2xl shadow-sm p-8 relative break-inside-avoid">
+                <h3 class="text-xl font-bold text-slate-800 mb-8">Professional Journey</h3>
+
+                <div class="absolute left-10 top-20 bottom-10 w-0.5 bg-slate-200"></div>
+
+                <div class="space-y-10">
+                    <div class="relative pl-10">
+                        <div
+                            class="absolute left-0 top-1.5 w-4 h-4 rounded-full bg-orange-500 ring-4 ring-white shadow">
+                        </div>
+                        <h4 class="font-bold text-slate-800 text-lg">Product Owner & GD</h4>
+                        <div class="text-sm font-semibold text-blue-600 mb-2">Mirai Studio | 2022 - Nay</div>
+                        <p class="text-sm text-slate-600 leading-relaxed">
+                            Định hướng sản phẩm dựa trên <strong>Data Insight</strong> thay vì cảm tính. Trực tiếp thiết
+                            kế các kịch bản <strong>A/B Testing</strong> liên tục để thấu hiểu User, tối ưu hóa tỷ lệ
+                            chuyển đổi. Đồng hành sát sao với <strong>Marketing Team</strong>, đảm bảo sản phẩm luôn
+                            khớp với thị hiếu thị trường (Market Fit) và chiến lược UA.
+                        </p>
+                    </div>
+
+                    <div class="relative pl-10">
+                        <div class="absolute left-0 top-1.5 w-4 h-4 rounded-full bg-blue-600 ring-4 ring-white shadow">
+                        </div>
+                        <h4 class="font-bold text-slate-800 text-lg">Technical Artist</h4>
+                        <div class="text-sm font-semibold text-slate-500 mb-2">Mirai Studio | 2020 - Nay</div>
+                        <p class="text-sm text-slate-600 leading-relaxed">
+                            Thiết lập nền tảng kỹ thuật (Technical Foundation) cho team Art. Xây dựng <strong>Automated
+                                Pipeline</strong> giúp giải phóng đội ngũ khỏi các tác vụ thủ công lặp lại, tối ưu hóa
+                            bộ nhớ và FPS cho dòng thiết bị cấp thấp.
+                        </p>
+                    </div>
+
+                    <div class="relative pl-10">
+                        <div class="absolute left-0 top-1.5 w-4 h-4 rounded-full bg-teal-500 ring-4 ring-white shadow">
+                        </div>
+                        <h4 class="font-bold text-slate-800 text-lg">3D ArchViz Specialist</h4>
+                        <div class="text-sm font-semibold text-slate-500 mb-2">Rolling Ant | 2017 - 2019</div>
+                        <p class="text-sm text-slate-600 leading-relaxed">
+                            Tiên phong chuyển đổi công nghệ từ Render tĩnh sang <strong>Real-time Experience</strong>.
+                            Ứng dụng tư duy trải nghiệm người dùng (UX) vào việc xây dựng không gian kiến trúc ảo trên
+                            nền tảng VR/AR.
+                        </p>
+                    </div>
+
+                    <div class="relative pl-10">
+                        <div class="absolute left-0 top-1.5 w-4 h-4 rounded-full bg-slate-400 ring-4 ring-white shadow">
+                        </div>
+                        <h4 class="font-bold text-slate-800 text-lg">Senior 3D Artist</h4>
+                        <div class="text-sm font-semibold text-slate-500 mb-2">Glass Egg (Virtuos) | 2012 - 2017</div>
+                        <p class="text-sm text-slate-600 leading-relaxed">
+                            Chinh phục các tiêu chuẩn khắt khe của dự án AAA (Need for Speed, Forza). Rèn luyện tư duy
+                            tỉ mỉ (Attention to Detail) và kỷ luật quy trình chuẩn quốc tế từ đối tác EA, Microsoft.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EDUCATION & LANGUAGE SECTION (Updated) -->
+            <div class="bg-white rounded-2xl shadow-sm p-8 border-t-4 border-indigo-500 break-inside-avoid">
+                <h3 class="text-xl font-bold text-slate-800 mb-6">Education & Language</h3>
+
+                <div class="space-y-6">
+                    <!-- PTI -->
+                    <div class="flex gap-4">
+                        <div
+                            class="flex-shrink-0 w-12 h-12 bg-indigo-50 rounded-lg flex items-center justify-center text-xl">
+                            🎓</div>
+                        <div>
+                            <h4 class="font-bold text-slate-800">Middle Management Specialist</h4>
+                            <div class="text-sm text-slate-600">Học viện Doanh nhân PTI</div>
+                            <div class="text-xs text-slate-400 mt-1">Kỹ năng quản trị & lãnh đạo</div>
+                        </div>
+                    </div>
+
+                    <!-- Scrum -->
+                    <div class="flex gap-4">
+                        <div
+                            class="flex-shrink-0 w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center text-xl">
+                            📜</div>
+                        <div>
+                            <h4 class="font-bold text-slate-800">Professional Scrum Master</h4>
+                            <div class="text-sm text-slate-600">Agile Academy</div>
+                            <div class="text-xs text-slate-400 mt-1">Quản lý dự án linh hoạt</div>
+                        </div>
+                    </div>
+
+                    <!-- Arena -->
+                    <div class="flex gap-4">
+                        <div
+                            class="flex-shrink-0 w-12 h-12 bg-orange-50 rounded-lg flex items-center justify-center text-xl">
+                            🎨</div>
+                        <div>
+                            <h4 class="font-bold text-slate-800">Advanced Diploma in Multimedia</h4>
+                            <div class="text-sm text-slate-600">Arena Multimedia</div>
+                            <div class="text-xs text-slate-400 mt-1">Mỹ thuật đa phương tiện</div>
+                        </div>
+                    </div>
+
+                    <!-- Language (Added) -->
+                    <div class="flex gap-4 pt-4 border-t border-slate-100">
+                        <div
+                            class="flex-shrink-0 w-12 h-12 bg-green-50 rounded-lg flex items-center justify-center text-xl">
+                            🗣️</div>
+                        <div>
+                            <h4 class="font-bold text-slate-800">English Proficiency</h4>
+                            <div class="text-sm text-slate-600 font-semibold text-green-700">Level: Intermediate (B1)
+                            </div>
+                            <div class="text-xs text-slate-500 mt-1">Giao tiếp tốt trong hội họp & công việc hàng ngày
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <button onclick="window.print()"
+        class="no-print fixed bottom-8 right-8 bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-full shadow-2xl transition transform hover:scale-110 z-50 group">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+        </svg>
+        <span
+            class="absolute right-full mr-3 top-2 bg-slate-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition whitespace-nowrap">Save
+            PDF</span>
+    </button>
+
+    <script>
+        // --- CONFIGURATION ---
+        Chart.defaults.font.family = "'Inter', sans-serif";
+        Chart.defaults.color = '#64748b';
+
+        // Helper: Wrap text
+        function wrapLabel(str, maxLen = 15) {
+            if (str.length <= maxLen) return str;
+            const words = str.split(' ');
+            const lines = [];
+            let currentLine = words[0];
+            for (let i = 1; i < words.length; i++) {
+                if ((currentLine + " " + words[i]).length <= maxLen) {
+                    currentLine += " " + words[i];
+                } else {
+                    lines.push(currentLine);
+                    currentLine = words[i];
+                }
+            }
+            lines.push(currentLine);
+            return lines;
+        }
+
+        // 3. SKILLS (Radar - STRATEGIC UPDATE)
+        new Chart(document.getElementById('skillsChart'), {
+            type: 'radar',
+            data: {
+                labels: ['Product Strategy', 'Agile/Scrum', 'Tech Art / Shader', 'Data Analysis', '3D Pipeline', 'Game Design'],
+                datasets: [{
+                    label: 'Competency',
+                    // Adjusted for "Bao quát toàn diện mức trung bình khá" (Comprehensive & Good/Solid)
+                    data: [85, 85, 88, 82, 88, 85],
+                    fill: true,
+                    backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                    borderColor: '#3b82f6',
+                    pointBackgroundColor: '#f97316',
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: '#f97316'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    r: {
+                        angleLines: { color: '#e2e8f0' },
+                        grid: { color: '#e2e8f0' },
+                        pointLabels: { font: { size: 11, weight: '600' }, color: '#475569' },
+                        ticks: { display: false, backdropColor: 'transparent' },
+                        // Ensuring the chart looks full but balanced
+                        suggestedMin: 50,
+                        suggestedMax: 100
+                    }
+                },
+                plugins: { legend: { display: false } }
+            }
+        });
+    </script>
+</body>
+
+</html>
